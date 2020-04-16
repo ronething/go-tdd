@@ -7,8 +7,13 @@ package main
 
 import "fmt"
 
+const helloPrefix = "Hello, "
+
 func Hello(name string) string {
-	return "Hello, " + name
+	if name == "" {
+		name = "World"
+	}
+	return helloPrefix + name
 }
 
 func main() {
