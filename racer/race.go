@@ -22,14 +22,32 @@ func httpGetTime(url string) time.Duration {
 	return d
 }
 
+//func Racer(a, b string) (winner string) {
+//	aDuration := httpGetTime(a)
+//
+//	bDuration := httpGetTime(b)
+//
+//	if aDuration < bDuration {
+//		return a
+//	}
+//
+//	return b
+//}
+
 func Racer(a, b string) (winner string) {
-	aDuration := httpGetTime(a)
-
-	bDuration := httpGetTime(b)
-
-	if aDuration < bDuration {
+	select {
+	case <-ping(a):
 		return a
+	case <-ping(b):
+		return b
 	}
+}
 
-	return b
+func ping(url string) chan bool {
+	ch := make(chan bool)
+	go func() {
+		http.Get(url)
+		ch <- true
+	}()
+	return ch
 }
