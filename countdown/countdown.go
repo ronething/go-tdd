@@ -15,19 +15,34 @@ import (
 const (
 	finalWord      = "Go!"
 	countdownStart = 3
+	write          = "write"
+	sleep          = "sleep"
 )
+
+type CountdownOperationsSpy struct {
+	Calls []string
+}
+
+func (s *CountdownOperationsSpy) Sleep() {
+	s.Calls = append(s.Calls, sleep)
+}
+
+func (s *CountdownOperationsSpy) Write(p []byte) (n int, err error) {
+	s.Calls = append(s.Calls, write)
+	return
+}
 
 type Sleeper interface {
 	Sleep()
 }
 
-type SpySleeper struct {
-	Calls int
-}
+//type SpySleeper struct {
+//	Calls int
+//}
 
-func (s *SpySleeper) Sleep() {
-	s.Calls++
-}
+//func (s *SpySleeper) Sleep() {
+//	s.Calls++
+//}
 
 type ConfigurableSleeper struct {
 	duration time.Duration
